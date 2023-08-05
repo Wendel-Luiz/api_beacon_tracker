@@ -1,0 +1,16 @@
+export enum Permission {
+  CreateAdminUser = 'CREATE_ADMIN_USER',
+  CreateDevice = 'CREATE_DEVICE',
+  CreateDeviceCategory = 'CREATE_DEVICE_CATEGORY',
+  CreateDeviceModel = 'CREATE_DEVICE_MODEL',
+  CreateReading = 'CREATE_READING',
+  GetCategories = 'GET_CATEGORIES',
+  GetDeviceById = 'GET_DEVICE_BY_ID',
+  GetModelsByCategory = 'GET_MODELS_BY_CATEGORY',
+  AddDevice = 'ADD_DEVICE',
+  DeleteCustomer = 'DELETE_CUSTOMER',
+  GetAllCustomerDevices = 'GET_ALL_CUSTOMER_DEVICES',
+  RemoveCustomerDevice = 'REMOVE_CUSTOMER_DEVICE',
+  UpdateCustomer = 'UPDATE_CUSTOMER',
+  UpdateCustomerDevice = 'UPDATE_CUSTOMER_DEVICE',
+}

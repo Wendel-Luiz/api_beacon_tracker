@@ -1,0 +1,35 @@
+version: '3'
+
+volumes:
+  db_data:
+  db_admin:
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 'dev'
+    ports:
+      - '15432:5432'
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - postgres-network
+
+  pgAdmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'dev@email.com'
+      PGADMIN_DEFAULT_PASSWORD: 'dev'
+    volumes:
+      - db_admin:/var/lib/postgresql/data
+    ports:
+      - '16543:80'
+    depends_on:
+      - postgres
+    networks:
+      - postgres-network
+
+networks:
+  postgres-network:
+    driver: bridge
