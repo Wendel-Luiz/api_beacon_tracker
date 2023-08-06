@@ -5,12 +5,14 @@ import { Permission } from './entities/permission.entity';
 import { Role } from './entities/role.entity';
 import { User } from './entities/user.entity';
 import { LoginUseCase } from './usecases/login/login.usecase';
-import { LoginRepository } from './usecases/login/login.repository';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtRepository } from './guards/jwt.repository';
 import { JwtGuard } from './guards/jwt.guard';
 import { JwtLocalService } from './utils/jwt.service';
 import { config } from 'src/config/env.config';
+import { UserRepository } from './repositories/user.repository';
+import { PermissionRepository } from './repositories/permission.repository';
+import { RoleRepository } from './repositories/role.repository';
+import { SigninUseCase } from './usecases/signin/signin.usecase';
 
 @Module({
   imports: [
@@ -26,11 +28,19 @@ import { config } from 'src/config/env.config';
   controllers: [AuthController],
   providers: [
     LoginUseCase,
-    LoginRepository,
+    SigninUseCase,
     JwtGuard,
-    JwtRepository,
     JwtLocalService,
+    UserRepository,
+    PermissionRepository,
+    RoleRepository,
   ],
-  exports: [TypeOrmModule, JwtLocalService, JwtRepository],
+  exports: [
+    TypeOrmModule,
+    JwtLocalService,
+    UserRepository,
+    PermissionRepository,
+    RoleRepository,
+  ],
 })
 export class AuthModule {}

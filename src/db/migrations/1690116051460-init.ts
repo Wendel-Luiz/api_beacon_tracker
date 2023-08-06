@@ -20,7 +20,7 @@ export class Init1690116051460 implements MigrationInterface {
       `CREATE TABLE "Device" ("id" SERIAL NOT NULL, "uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "title" character varying(256) NOT NULL, "code" character varying NOT NULL, "createdBy" integer, "updatedBy" integer, "deletedBy" integer, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "deviceModelId" integer, CONSTRAINT "PK_f0a3247774bd4eaad2177055336" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "CustomerDevice" ("id" SERIAL NOT NULL, "uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "surname" character varying(256) NOT NULL, "thumbnail" character varying(256) NOT NULL, "color" character varying(256) NOT NULL, "createdBy" integer, "updatedBy" integer, "deletedBy" integer, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "userId" integer, "deviceId" integer, CONSTRAINT "PK_a8b68cfaff665156d21899047cf" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "UserDevice" ("id" SERIAL NOT NULL, "uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "surname" character varying(256) NOT NULL, "thumbnail" character varying(256) NOT NULL, "color" character varying(256) NOT NULL, "createdBy" integer, "updatedBy" integer, "deletedBy" integer, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "userId" integer, "deviceId" integer, CONSTRAINT "PK_00fb9ce2465cdc6c5f47e1ef5df" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "User" ("id" SERIAL NOT NULL, "uuid" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying(256) NOT NULL, "email" character varying(256) NOT NULL, "phone" character varying(256) NOT NULL, "password" character varying(256) NOT NULL, "thumbnail" character varying(256) NOT NULL, "createdBy" integer, "updatedBy" integer, "deletedBy" integer, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "roleId" integer, CONSTRAINT "PK_9862f679340fb2388436a5ab3e4" PRIMARY KEY ("id"))`,
@@ -44,10 +44,10 @@ export class Init1690116051460 implements MigrationInterface {
       `ALTER TABLE "Device" ADD CONSTRAINT "FK_47bd5bc0f9a964a819c070237bf" FOREIGN KEY ("deviceModelId") REFERENCES "DeviceModel"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "CustomerDevice" ADD CONSTRAINT "FK_98f8b2c34ffeef4dbcacb70faad" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "UserDevice" ADD CONSTRAINT "FK_e69f82cf0fc44f121ee38e6810c" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "CustomerDevice" ADD CONSTRAINT "FK_f21cf0b8d011be0c65f81791ed0" FOREIGN KEY ("deviceId") REFERENCES "Device"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
+      `ALTER TABLE "UserDevice" ADD CONSTRAINT "FK_0f08f5aa48e1f2c270babe7a886" FOREIGN KEY ("deviceId") REFERENCES "Device"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "User" ADD CONSTRAINT "FK_0b8c60cc29663fa5b9fb108edd7" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
@@ -56,7 +56,7 @@ export class Init1690116051460 implements MigrationInterface {
       `ALTER TABLE "RolePermissions" ADD CONSTRAINT "FK_5bc4baf52e29432973ac9ebf90a" FOREIGN KEY ("roleId") REFERENCES "Role"("id") ON DELETE CASCADE ON UPDATE CASCADE`,
     );
     await queryRunner.query(
-      `ALTER TABLE "RolePermissions" ADD CONSTRAINT "FK_2c2887cb39b3141958851e6fbdc" FOREIGN KEY ("permissionId") REFERENCES "Permission"("id") ON DELETE CASCADE ON UPDATE CASCADE`,
+      `ALTER TABLE "RolePermissions" ADD CONSTRAINT "FK_2c2887cb39b3141958851e6fbdc" FOREIGN KEY ("permissionId") REFERENCES "Permission"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
   }
 
@@ -71,10 +71,10 @@ export class Init1690116051460 implements MigrationInterface {
       `ALTER TABLE "User" DROP CONSTRAINT "FK_0b8c60cc29663fa5b9fb108edd7"`,
     );
     await queryRunner.query(
-      `ALTER TABLE "CustomerDevice" DROP CONSTRAINT "FK_f21cf0b8d011be0c65f81791ed0"`,
+      `ALTER TABLE "UserDevice" DROP CONSTRAINT "FK_0f08f5aa48e1f2c270babe7a886"`,
     );
     await queryRunner.query(
-      `ALTER TABLE "CustomerDevice" DROP CONSTRAINT "FK_98f8b2c34ffeef4dbcacb70faad"`,
+      `ALTER TABLE "UserDevice" DROP CONSTRAINT "FK_e69f82cf0fc44f121ee38e6810c"`,
     );
     await queryRunner.query(
       `ALTER TABLE "Device" DROP CONSTRAINT "FK_47bd5bc0f9a964a819c070237bf"`,
@@ -91,7 +91,7 @@ export class Init1690116051460 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "RolePermissions"`);
     await queryRunner.query(`DROP TABLE "Role"`);
     await queryRunner.query(`DROP TABLE "User"`);
-    await queryRunner.query(`DROP TABLE "CustomerDevice"`);
+    await queryRunner.query(`DROP TABLE "UserDevice"`);
     await queryRunner.query(`DROP TABLE "Device"`);
     await queryRunner.query(`DROP TABLE "DeviceReading"`);
     await queryRunner.query(`DROP TABLE "DeviceModel"`);

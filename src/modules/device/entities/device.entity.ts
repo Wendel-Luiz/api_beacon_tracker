@@ -10,8 +10,7 @@ import {
 } from 'typeorm';
 import { DeviceModel } from '../entities/deviceModel.entity';
 import { DeviceReading } from './deviceReading.entity';
-import { User } from 'src/modules/auth/entities/user.entity';
-import { CustomerDevice } from 'src/modules/customer/entities/customerDevice.entity';
+import { UserDevice } from 'src/modules/user/entities/userDevice.entity';
 
 @Entity({ name: 'Device' })
 export class Device {
@@ -33,8 +32,8 @@ export class Device {
   @OneToMany(() => DeviceReading, (deviceReading) => deviceReading.device)
   deviceReadings: DeviceReading[];
 
-  @OneToMany(() => CustomerDevice, (customerDevice) => customerDevice.device)
-  customers: CustomerDevice[];
+  @OneToMany(() => UserDevice, (userDevice) => userDevice.device)
+  customers: UserDevice[];
 
   @Column({ nullable: true })
   createdBy: number;

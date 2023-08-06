@@ -7,16 +7,16 @@ import {
 import { Reflector } from '@nestjs/core';
 import { PERMISSION_KEY } from '../decorators/requirePermission.decorator';
 import { Permission as PermissionEnum } from '../enums/permissions.enum';
-import { JwtRepository } from './jwt.repository';
 import { JwtLocalService } from '../utils/jwt.service';
-import { UserRequest } from 'src/modules/shared/shemas/user.schema';
+import { PermissionRepository } from '../repositories/permission.repository';
+import { UserRequest } from 'src/shared/schemas/user.schema';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
   constructor(
     private jwtLocalService: JwtLocalService,
     private reflector: Reflector,
-    private repo: JwtRepository,
+    private permissionRepo: PermissionRepository,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -43,7 +43,7 @@ export class JwtGuard implements CanActivate {
         role: payload.role,
       } as UserRequest;
 
-      const userPermissions = await this.repo.findPermissionsByRole(
+      const userPermissions = await this.permissionRepo.findPermissionsByRole(
         payload.role,
       );
 

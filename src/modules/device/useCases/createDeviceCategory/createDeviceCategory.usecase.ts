@@ -1,25 +1,26 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   CreateDeviceCategoryRequest,
   CreateDeviceCategoryResponse,
 } from './createDeviceCategory.schema';
-import { CreateDeviceCategoryRepository } from './createDeviceCategory.repository';
+import { EntityAlreadyExists } from 'src/exceptions/entityAlreadyExists.exception';
+import { DeviceCategoryRepository } from '../../repositories/deviceCategory.repository';
 
 @Injectable()
 export class CreateDeviceCategoryUseCase {
-  constructor(private repo: CreateDeviceCategoryRepository) {}
+  constructor(private deviceCategoryRepo: DeviceCategoryRepository) {}
 
   async execute(
     dto: CreateDeviceCategoryRequest,
   ): Promise<CreateDeviceCategoryResponse> {
-    if (await this.repo.categoryExists(dto.slug)) {
-      throw new ConflictException(
-        `Device category (${dto.slug}) already exists.`,
+    if (await this.deviceCategoryRepo.exists({ slug: dto.slug })) {
+      throw new EntityAlreadyExists(
+        `Device category (${dto.slug}) already exists`,
       );
     }
 
-    const deviceCategory = this.repo.createCategory(dto);
-    const inserted = await this.repo.insertCategory(deviceCategory);
+    const deviceCategory = this.deviceCategoryRepo.create(dto);
+    const inserted = await this.deviceCategoryRepo.insert(deviceCategory);
 
     return {
       id: inserted.uuid,

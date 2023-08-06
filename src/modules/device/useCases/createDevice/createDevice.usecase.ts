@@ -4,24 +4,31 @@ import {
   CreateDeviceRequest,
   CreateDeviceResponse,
 } from './createDevice.schema';
-import { CreateDeviceRepository } from './createDevice.repository';
+import { EntityNotFound } from 'src/exceptions/entityNotFound.exception';
+import { DeviceRepository } from '../../repositories/device.repository';
+import { DeviceModelRepository } from '../../repositories/deviceModel.repository';
 
 @Injectable()
 export class CreateDeviceUseCase {
-  constructor(private repo: CreateDeviceRepository) {}
+  constructor(
+    private deviceRepo: DeviceRepository,
+    private deviceModelRepo: DeviceModelRepository,
+  ) {}
 
   async execute(dto: CreateDeviceRequest): Promise<CreateDeviceResponse> {
-    const deviceModel = await this.repo.findDeviceModelById(dto.deviceModel);
+    const deviceModel = await this.deviceModelRepo.findById(dto.deviceModel);
     if (!deviceModel) {
-      throw new Error(`Device model of id(${dto.deviceModel}) not found.`);
+      throw new EntityNotFound(
+        `Device model of id(${dto.deviceModel}) not found`,
+      );
     }
 
-    const device = this.repo.createDevice({
+    const device = this.deviceRepo.create({
       ...dto,
       deviceModel,
     });
 
-    const inserted = await this.repo.insertDevice(device);
+    const inserted = await this.deviceRepo.insert(device);
 
     return {
       id: inserted.uuid,

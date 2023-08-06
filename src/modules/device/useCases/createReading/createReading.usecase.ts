@@ -4,27 +4,32 @@ import {
   CreateReadingRequest,
   CreateReadingResponse,
 } from './createReading.schema';
-import { CreateReadingRepository } from './createReading.repository';
+import { EntityNotFound } from 'src/exceptions/entityNotFound.exception';
+import { DeviceReadingRepository } from '../../repositories/deviceReading.repository';
+import { DeviceRepository } from '../../repositories/device.repository';
 
 @Injectable()
 export class CreateReadingUseCase {
-  constructor(private repo: CreateReadingRepository) {}
+  constructor(
+    private deviceReadingRepo: DeviceReadingRepository,
+    private deviceRepo: DeviceRepository,
+  ) {}
 
   async execute(
     param: CreateReadingParam,
     dto: CreateReadingRequest,
   ): Promise<CreateReadingResponse> {
-    const device = await this.repo.findDeviceById(param.id);
+    const device = await this.deviceRepo.findById(param.id);
     if (!device) {
-      throw new Error(`Device of id(${param.id}) not found.`);
+      throw new EntityNotFound(`Device of id(${param.id}) not found`);
     }
 
-    const deviceReading = this.repo.createReading({
+    const deviceReading = this.deviceReadingRepo.create({
       ...dto,
       device,
     });
 
-    const inserted = await this.repo.insertReading(deviceReading);
+    const inserted = await this.deviceReadingRepo.insert(deviceReading);
 
     return {
       id: inserted.uuid,

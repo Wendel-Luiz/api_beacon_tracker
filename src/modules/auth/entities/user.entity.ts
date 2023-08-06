@@ -1,5 +1,5 @@
 import { Role } from 'src/modules/auth/entities/role.entity';
-import { CustomerDevice } from 'src/modules/customer/entities/customerDevice.entity';
+import { UserDevice } from 'src/modules/user/entities/userDevice.entity';
 import {
   Entity,
   Column,
@@ -37,10 +37,10 @@ export class User {
   @ManyToOne(() => Role, (role) => role.users)
   role: Role;
 
-  @OneToMany(() => CustomerDevice, (customerDevice) => customerDevice.user, {
+  @OneToMany(() => UserDevice, (userDevice) => userDevice.user, {
     cascade: ['remove'],
   })
-  devices: CustomerDevice[];
+  devices: UserDevice[];
 
   @Column({ nullable: true })
   createdBy: number;

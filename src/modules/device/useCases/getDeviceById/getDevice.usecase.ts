@@ -1,15 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { GetDeviceByIdParam, GetDeviceByIdResponse } from './getDevice.schema';
-import { GetDeviceByIdRepository } from './getDevice.repository';
+import { EntityNotFound } from 'src/exceptions/entityNotFound.exception';
+import { DeviceRepository } from '../../repositories/device.repository';
 
 @Injectable()
 export class GetDeviceByIdUseCase {
-  constructor(private repo: GetDeviceByIdRepository) {}
+  constructor(private deviceRepo: DeviceRepository) {}
 
   async execute(param: GetDeviceByIdParam): Promise<GetDeviceByIdResponse> {
-    const device = await this.repo.findDeviceById(param.id);
+    const device = await this.deviceRepo.findById(param.id);
     if (!device) {
-      throw new NotFoundException(`Device of id (${param.id}) not found.`);
+      throw new EntityNotFound(`Device of id (${param.id}) not found`);
     }
 
     return {
