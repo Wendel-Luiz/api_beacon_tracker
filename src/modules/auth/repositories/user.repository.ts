@@ -31,6 +31,9 @@ export class UserRepository {
       where: {
         email,
       },
+      relations: {
+        role: true,
+      },
     });
   }
 
@@ -40,7 +43,6 @@ export class UserRepository {
         uuid: id,
       },
       relations: {
-        role: true,
         devices: {
           device: {
             deviceModel: true,
