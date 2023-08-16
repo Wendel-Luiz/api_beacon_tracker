@@ -4,7 +4,7 @@ import { AddDeviceRequest, AddDeviceResponse } from './addDevice.schema';
 import { EntityNotFound } from 'src/exceptions/entityNotFound.exception';
 import { DeviceRepository } from 'src/modules/device/repositories/device.repository';
 import { UserRepository } from 'src/modules/auth/repositories/user.repository';
-import { UserDeviceRepository } from '../../repositories/UserDevice.repository';
+import { UserDeviceRepository } from '../../repositories/userDevice.repository';
 import { UserRequest } from 'src/shared/schemas/user.schema';
 
 @Injectable()
