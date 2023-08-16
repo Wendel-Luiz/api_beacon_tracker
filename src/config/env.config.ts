@@ -26,17 +26,17 @@ class Config {
   readonly jwt_secret: string;
 
   constructor() {
-    const _env = configDotenv();
+    if (process.env.NODE_ENV !== 'prod') configDotenv();
 
-    this.server_port = Number(_env.parsed.SERVER_PORT);
+    this.server_port = Number(process.env.SERVER_PORT);
 
-    this.db_host = _env.parsed.DB_HOST;
-    this.db_port = Number(_env.parsed.DB_PORT);
-    this.db_username = _env.parsed.DB_USERNAME;
-    this.db_password = _env.parsed.DB_PASSWORD;
-    this.db_database = _env.parsed.DB_DATABASE;
-    this.super_admin_pswd = _env.parsed.SUPER_ADMIN_PSWD;
-    this.jwt_secret = _env.parsed.JWT_SECRET;
+    this.db_host = process.env.DB_HOST;
+    this.db_port = Number(process.env.DB_PORT);
+    this.db_username = process.env.DB_USERNAME;
+    this.db_password = process.env.DB_PASSWORD;
+    this.db_database = process.env.DB_DATABASE;
+    this.super_admin_pswd = process.env.SUPER_ADMIN_PSWD;
+    this.jwt_secret = process.env.JWT_SECRET;
 
     configSchema.parse(this);
   }
