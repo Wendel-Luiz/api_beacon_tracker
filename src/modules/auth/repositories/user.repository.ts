@@ -40,6 +40,7 @@ export class UserRepository {
         uuid: id,
       },
       relations: {
+        role: true,
         devices: {
           device: {
             deviceModel: true,
