@@ -13,6 +13,7 @@ import { UserRepository } from './repositories/user.repository';
 import { PermissionRepository } from './repositories/permission.repository';
 import { RoleRepository } from './repositories/role.repository';
 import { SigninUseCase } from './usecases/signin/signin.usecase';
+import { HealthCheckUseCase } from './usecases/healthcheck/healthcheck.usecase';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { SigninUseCase } from './usecases/signin/signin.usecase';
     UserRepository,
     PermissionRepository,
     RoleRepository,
+    HealthCheckUseCase,
   ],
   exports: [
     TypeOrmModule,
